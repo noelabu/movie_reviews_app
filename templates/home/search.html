@@ -6,15 +6,10 @@
 {% block stylesheets %}{% endblock stylesheets %}
 
 {% block content%}
-
 <!-- Intro -->
-<section id="intro" class="wrapper style2 fade-up">
+<section id="intro" class="wrapper style1 fade-up">
     <div class="inner">
-        {% if user.is_authenticated %}
-        <h1>Hi {{user.username}}!</h1>
-        {% else %}
         <h1>Movie Reviews</h1>
-        {% endif %}
         <p>This application displays movie reviews from The New York Times.</p>
         {% if msg %}
             <p>{{ msg }}</p>
@@ -27,19 +22,17 @@
                 </div>
             </div>
             <div class="actions" align="right">
-                <input type="submit" value="Search" name="reviews_form" class="button smooth-scroll-middle" />
+                <input type="submit" value="Search" class="button smooth-scroll-middle" />
             </div>
-            
         </form>
     </div>
 </section>
 
 <!-- One -->
-<section id="one" class="wrapper style1 spotlights">
+<section id="one" class="wrapper style2 spotlights">
     {% for review in reviews %}
     {% if review in bookmarked%}
     <section  >
-        <a class="image center"><img src={{review.multimedia.src}} alt="" data-position="center center" /></a>
         <div class="content"">
             <h2> <a href={{review.link.url}} target="_blank">{{review.headline}}</a></h2>
             <p>{{review.summary_short}}</p>
@@ -50,28 +43,20 @@
         </div>
     </section>
     {% else %}
-        <section>
-            <a class="image center"><img src={{review.multimedia.src}} alt="" data-position="center center" /></a>
+        <section  >
             <div class="content"">
-                <h3> <a href={{review.link.url}} target="_blank">{{review.headline}}</a></h3>
+                <h2> <a href={{review.link.url}} target="_blank">{{review.headline}}</a></h2>
                 <p>{{review.summary_short}}</p>
                 <form method="POST">
                     {% csrf_token %}
                     <button class="button" type="submit" value="Bookmarked!" name="review_{{ forloop.counter0 }}"><span class="far fa-bookmark"></span></button> 
                 </form>
-            </div>
         </section>
     {% endif %}
     {% endfor %}
 </section>
+
 {% endblock content%}
-{% block footer %}
-<form method="POST">
-    {% csrf_token %}
-    <div class="actions" align="right">
-        <input type="submit" value=">>" name="reviews_form" class="btn" />
-    </div>
-</form>
-{% endblock footer %}
+
 <!-- Specific JS goes HERE --> 
 {% block javascripts %}{% endblock javascripts %}
