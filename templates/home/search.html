@@ -10,21 +10,7 @@
 <section id="intro" class="wrapper style1 fade-up">
     <div class="inner">
         <h1>Movie Reviews</h1>
-        <p>This application displays movie reviews from The New York Times.</p>
-        {% if msg %}
-            <p>{{ msg }}</p>
-        {% endif %}
-        <form method="POST">
-            {% csrf_token %}
-            <div class="fields">
-                <div class="field">
-                    {{ form.search}}
-                </div>
-            </div>
-            <div class="actions" align="right">
-                <input type="submit" value="Search" class="button smooth-scroll-middle" />
-            </div>
-        </form>
+        <p>Here is the result of your search.</p>
     </div>
 </section>
 
