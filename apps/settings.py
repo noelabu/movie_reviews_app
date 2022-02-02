@@ -27,7 +27,7 @@ SECRET_KEY = config('SECRET_KEY', default='q6qhfyd=3l2u9_8o**hh#$x3l0l_h3aj%ugwe
 DEBUG = config('DEBUG', default=True, cast=bool)
 
 # load production server from .env
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'https://noelabu-movie-reviews-app.herokuapp.com/']
+ALLOWED_HOSTS = ['noelabu-movie-reviews-app.herokuapp.com', 'localhost', '127.0.0.1',]
 
 # Application definition
 
