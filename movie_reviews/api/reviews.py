@@ -11,7 +11,6 @@ import os
 import requests
 import json
 
-import pandas as pd
 from decouple import config
 # -----------------------------------------------------------------------------------------------+
 # Global Variables                                                                               +
