@@ -10,7 +10,7 @@ urlpatterns = [
     path('bookmarks/', views.bookmarks, name='bookmarks'),
     path('login/', views.user_login, name="login"),
     path('register/', views.register, name="register"),
-    path('search/', views.search, name="search"),
+    path('search/<search_keywords>/', views.search, name="search"),
     path('logout/', LogoutView.as_view(), name="logout")
     
 ]

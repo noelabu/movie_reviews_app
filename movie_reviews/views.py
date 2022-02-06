@@ -116,9 +116,8 @@ def index(request):
         if request.POST.get("reviews_form") == "Search":
             if form.is_valid():
                 # Retrieve searh/keyword in the form
-                search = form.cleaned_data.get("search")
-                request.session['search'] = search
-                return redirect('search')
+                search_keywords = form.cleaned_data.get("search")
+                return redirect('search', search_keywords=search_keywords)
             else:
                 msg = "Keyword is not valid!"
         
@@ -136,19 +135,28 @@ def index(request):
 
 
 @login_required(login_url="/login")
-def search(request):
+def search(request, search_keywords):
     # Search Form
     form = SearchForm(request.POST or None)
+    msg = None
 
     # Get the current user
     current_user = request.user
 
     # Retrieve reviews from NYT Movie Reviews Search API
     mv_reviews = MovieReviews()
-    search = request.session['search']
-    reviews = mv_reviews.search(search)
-    # Bookmark reviews
-    bookmark_it(request, reviews, current_user.username)
+    reviews = mv_reviews.search(search_keywords)
+    if request.method == "POST":
+        if request.POST.get("reviews_form") == "Search":
+            if form.is_valid():
+                # Retrieve searh/keyword in the form
+                search_keywords = form.cleaned_data.get("search")
+                return redirect('search', search_keywords=search_keywords)
+            else:
+                msg = "Keyword is not valid!"
+    
+        # Bookmark reviews
+        bookmark_it(request, reviews, current_user.username)
     # Retrieve the reviews from the Bookmarked Database
     bookmarked = refresh_bookmarked_list(current_user.username)
     return render(request, "home/search.html", {"form":form, "reviews": reviews, "bookmarked": bookmarked})

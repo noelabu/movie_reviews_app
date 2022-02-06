@@ -9,8 +9,24 @@
 <!-- Intro -->
 <section id="intro" class="wrapper style1 fade-up">
     <div class="inner">
+        {% if user.is_authenticated %}
+        <h1>Hi {{user.username}}!</h1>
+        {% else %}
         <h1>Movie Reviews</h1>
-        <p>Here is the result of your search.</p>
+        {% endif %}
+        <p>Here is the result of your search:</p>
+        <form method="POST">
+            {% csrf_token %}
+            <div class="fields">
+                <div class="field">
+                    {{ form.search}}
+                </div>
+            </div>
+            <div class="actions" align="right">
+                <input type="submit" value="Search" name="reviews_form" class="button smooth-scroll-middle" />
+            </div>
+            
+        </form>
     </div>
 </section>
 
