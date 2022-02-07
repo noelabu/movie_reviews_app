@@ -8,6 +8,9 @@
 # -----------------------------------------------------------------------------------------------+
 import os
 import sys
+import json
+
+from django.contrib.auth import get_user_model
 
 from movie_reviews.api.reviews import MovieReviews
 from .models import BookmarkedReviews
@@ -23,25 +26,8 @@ from .models import BookmarkedReviews
 # -----------------------------------------------------------------------------------------------+
 # Main Code                                                                                      +
 # -----------------------------------------------------------------------------------------------+
-def bookmark_it(request, reviews, username):
-    """ save or remove the review to the database
 
-    Args:
-        request (): request page
-        reviews (list): list of reviews in the page
-        username (string): username of the current user
-    """
-    for i in range(10):
-        button = "review_{}".format(i)
-        remove_button = "reviewr_{}".format(i)
-        if button in request.POST:
-            b = BookmarkedReviews(user=username, reviews=reviews[i])
-            b.save()
-        elif remove_button in request.POST:
-            b = BookmarkedReviews.objects.filter(user=username).filter(reviews=reviews[i])
-            b.delete()
-
-def refresh_bookmarked_list(username):
+def refresh_bookmarked_list(request):
     """ retrieve the reviews from the bookmark database
 
     Args:
@@ -50,10 +36,32 @@ def refresh_bookmarked_list(username):
     Returns:
         list : list of reviews in the Bookmarked database
     """
-    bookmarked_reviews = list(BookmarkedReviews.objects.all().filter(user=username))
+    bookmarked_reviews = list(BookmarkedReviews.objects.all().filter(user=request.user))
     bookmarked = [review.reviews for review in bookmarked_reviews]
     return bookmarked
 
+def replace_string_to_json(string):
+    """ converts the string to json
+
+    Args:
+        string
+
+    Returns:
+        json
+    """
+    try:
+        s = string.replace('\t','')
+        s = s.replace('\'', '\"')
+        s = s.replace('\n','')
+        s = s.replace(',}','}')
+        s = s.replace(',]',']')
+        s = s.replace('None', "null")
+        return json.loads(s)
+    except:
+        return "None"
+
+
+    
 # -----------------------------------------------------------------------------------------------+
 # Footer                                                                                         +
 # -----------------------------------------------------------------------------------------------+

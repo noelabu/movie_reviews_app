@@ -43,9 +43,9 @@
         <div class="content"">
             <h2> <a href={{review.link.url}} target="_blank">{{review.headline}}</a></h2>
             <p>{{review.summary_short}}</p>
-            <form method="POST">
+            <form method="POST" action="{% url 'addbookmark' %}?type=remove_bookmark&review={{review}}">
                 {% csrf_token %}
-                <button class="button primary" type="submit" value="remove_bookmark" name="reviewr_{{ forloop.counter0 }}">Bookmarked!<span class="fas fa-bookmark"></span></button> 
+                <button class="button primary" type="submit" value="remove_bookmark" name="reviewr_{{ review.link.url }}">Bookmarked!<span class="fas fa-bookmark"></span></button> 
             </form>
         </div>
     </section>
@@ -55,18 +55,37 @@
             <div class="content"">
                 <h3> <a href={{review.link.url}} target="_blank">{{review.headline}}</a></h3>
                 <p>{{review.summary_short}}</p>
-                <form method="POST">
-                    {% csrf_token %}
-                    <button class="button" type="submit" value="Bookmarked!" name="review_{{ forloop.counter0 }}"><span class="far fa-bookmark"></span></button> 
-                </form>
+                <button class="button" type="button" data-toggle="modal" data-target="#Modal_{{review.link.url}}" name="review_{{ review.link.url }}"><span class="far fa-bookmark"></span></button> 
+                 <!-- Modal -->
+                
+                <div class="modal fade" id="Modal_{{review.link.url}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                    <div class="modal-content bg-info">
+                        <div class="modal-body">
+                        <form method="POST" action="{% url 'addbookmark' %}?type=add_bookmark&review={{review}}">
+                            {% csrf_token %}
+                            <div class="fields">
+                                <div class="field">
+                                    {{ bookmark_form.foldername}}
+                                </div>
+                            </div>
+                            <div class="actions" align="right">
+                                <button class="button"type="submit" value="Bookmarked!" name="submit-{{review.link.url}}"><span class="far fa-bookmark"></span></button> 
+                            </div>
+                        </form>
+                        </div>
+                    </div>
+                    </div>
+                </div>
             </div>
         </section>
     {% endif %}
     {% endfor %}
 </section>
+
 {% endblock content%}
 {% block footer %}
-<form method="POST">
+<form method="POST" action="{% url 'nextpage' %}?page={{page}}">
     {% csrf_token %}
     <div class ="row">
         <div class="actions" align="right">

@@ -8,20 +8,24 @@
 {% block content%}
 
 <!-- One -->
-<section id="one" class="wrapper style2 spotlights">
-    {% for review in bookmarked %}
-    <section  >
-        <div class="content"">
-            <h2> <a href={{review.link.url}} target="_blank">{{review.headline}}</a></h2>
+<section id="one" class="wrapper style2 fade-up">
+    <div class="inner">
+    {% for key, value in bookmarked.items %}
+    <h2>{{key}}</h2>
+    {% for review in value%}
+    <div class="features">
+        <section>
+            <h3><a href={{review.link.url}} target="_blank">{{review.headline}}</a></h3>
             <p>{{review.summary_short}}</p>
-            <form method="POST">
+            <form method="POST"  action="{% url 'addbookmark' %}?type=remove_bookmark&review={{review}}">
                 {% csrf_token %}
-                <button class="button primary" type="submit" value="remove_bookmark" name="reviewr_{{ forloop.counter0 }}">Bookmarked!<span class="fas fa-bookmark"></span></button> 
+                <button class="button primary" type="submit" value="remove_bookmark" name="reviewr_{{ review.link.url }}">Bookmarked!<span class="fas fa-bookmark"></span></button> 
             </form>
-        </div>
-    </section>
-
+        </section>
+    </div>
     {% endfor %}
+    {% endfor %}
+    </div>
 </section>
 
 {% endblock content%}

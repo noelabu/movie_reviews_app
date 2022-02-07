@@ -8,7 +8,15 @@ from django.conf import settings
 
 
 class BookmarkedReviews(models.Model):
-    user = models.CharField( max_length=255)
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        to_field="username",
+        on_delete=models.CASCADE,
+    )
+    folder = models.CharField(
+        max_length=30,
+        default='Favorites'
+        )
     reviews = models.JSONField()
 
     def __str__(self):
